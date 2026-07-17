@@ -1,0 +1,8 @@
+RESUME (source of truth — structured JSON):
+{{RESUME_JSON}}
+
+JOB DESCRIPTION:
+{{JOB_DESCRIPTION}}
+
+ANALYSIS RESULT:
+{{ANALYSIS_JSON}}

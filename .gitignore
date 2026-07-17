@@ -1,0 +1,16 @@
+# dependencies
+node_modules/
+
+# env
+server/.env
+.env
+
+# build output
+client/dist/
+
+# generated artifacts
+generated/
+
+# OS
+.DS_Store
+Thumbs.db

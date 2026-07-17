@@ -1,0 +1,154 @@
+%-------------------------
+% Resume in Latex
+% Author: Samarth Shinde
+%------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+\usepackage{multicol}
+\setlength{\multicolsep}{-3.0pt}
+\setlength{\columnsep}{-1pt}
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\addtolength{\oddsidemargin}{-0.6in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1.19in}
+\addtolength{\topmargin}{-.7in}
+\addtolength{\textheight}{1.4in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\titleformat{\section}{
+  \vspace{-6pt}\scshape\raggedright\large\bfseries
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+\pdfgentounicode=1
+
+\newcommand{\resumeItem}[1]{\item\small{{#1 \vspace{-2pt}}}}
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & \textbf{\small #2} \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-6pt}
+}
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{1.001\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & \textbf{\small #2}\\
+    \end{tabular*}\vspace{-6pt}
+}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.0in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    {\Huge \scshape Samarth Shinde} \\ \vspace{4pt}
+    \textbf{\Large \scshape Full Stack Developer (MERN)} \\ \vspace{4pt}
+    \small \faPhone\ +91-92658-85486 ~ 
+    \href{mailto:samarthshinde4033@gmail.com}{\faEnvelope\ \underline{samarthshinde4033@gmail.com}} ~ 
+    \href{https://samarthshinde.tech}{\faGlobe\ \underline{samarthshinde.tech}} ~
+    \href{https://github.com/Samarth40}{\faGithub\ \underline{github.com/Samarth40}}
+\end{center}
+
+%-----------SUMMARY-----------
+\section{Summary}
+Passionate \textbf{MERN Stack Developer} with hands-on experience in designing and deploying full-stack applications using \textbf{MongoDB, Express.js, React.js, and Node.js}. Skilled in building responsive UIs, developing REST APIs, implementing authentication (JWT, Firebase), and integrating cloud services. Strong problem-solver with proven ability to deliver scalable web solutions.
+
+%-----------SKILLS-----------
+\section{Technical Skills}
+\textbf{Frontend:} React.js, JavaScript (ES6+), Tailwind CSS, HTML5, CSS3, Shadcn/ui, Framer Motion \\
+\textbf{Backend:} Node.js, Express.js, REST APIs, Authentication, Middleware, MVC architecture \\
+\textbf{Databases:} MongoDB, Firestore, Mongoose, SQL (basics) \\
+\textbf{DevOps/Tools:} Git, GitHub, Vercel, Firebase, Cloudinary \\
+\textbf{Soft Skills:} Communication, Team Leadership, Mentoring, Problem-Solving
+%-----------EXPERIENCE-----------
+\section{Experience}
+\resumeSubHeadingListStart
+  \resumeSubheading
+    {Frontend Developer Intern}{Nov 2024 -- Apr 2025}
+    {Expert IT Data Informatics LLP, Pune}{}
+    \resumeItemListStart
+      \resumeItem{Developed \textbf{NotaryBuddy}, a website for secure document notarization with multiple options including remote, mobile, and in-person services.}
+      \resumeItem{Built \textbf{Digitechub}, a React.js and Node.js platform integrating 6 vertical modules, with optimized API calls and a 95\% Lighthouse performance score.}
+      \resumeItem{Contributed to a \textbf{Blockchain NFT marketplace}, implementing backend APIs in Node.js and MongoDB for secure gold token trading.}
+    \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+%-----------PROJECTS-----------
+\section{Projects}
+\resumeSubHeadingListStart
+  \resumeProjectHeading
+      {\textbf{VanRaksha} $|$ MERN, Firebase, Aptos Blockchain}{Feb 2025}
+      \resumeItemListStart
+        \resumeItem{Built a digital tree adoption platform with NFT certificates; integrated AI + blockchain features, issuing 150+ NFTs.}
+      \resumeItemListEnd
+
+  \resumeProjectHeading
+      {\textbf{Trend Forecaster} $|$ MERN, Firebase, Shadcn/ui}{Jan 2025}
+      \resumeItemListStart
+        \resumeItem{Created a trend prediction tool using AI-powered news analysis; processed 1,000+ articles weekly with 40\% faster decision-making.}
+      \resumeItemListEnd
+
+  \resumeProjectHeading
+      {\textbf{MoodLens} $|$ MERN, AI, Tailwind}{Jan 2025}
+      \resumeItemListStart
+        \resumeItem{Developed an AI-powered mood detection application achieving high accuracy, utilizing machine learning to analyze and respond to user emotions..}
+      \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+%-----------ACTIVITIES-----------
+\section{Leadership \& Activities}
+\resumeSubHeadingListStart
+  \resumeSubheading
+    {Google Developers Group On Campus, PDEACOE}{Sep 2024 -- May 2025}
+    {Co-Lead}{}
+    \resumeItemListStart
+      \resumeItem{Organized 5+ coding workshops and hackathons, engaging 350+ participants.}
+      \resumeItem{Mentored 20+ students in MERN stack projects; improved project delivery by 35\%.}
+      \resumeItem{Led community initiatives boosting participation by 70\%.}
+    \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+%-----------EDUCATION-----------
+\section{Education}
+\resumeSubHeadingListStart
+  \resumeSubheading
+    {Bachelor of Engineering in Computer Engineering}{Expected May 2026}
+    {PDEA's College of Engineering, Pune}{GPA: 8.76/10}
+\resumeSubHeadingListEnd
+
+%-----------CERTIFICATIONS & AWARDS-----------
+\section{Certifications \& Awards}
+\resumeItemListStart
+  \resumeItem{Full-Stack Web Development (Sigma Batch, Apna College, 2024)}
+  \resumeItem{Finalist, Outlier AI National Hackathon (Top 10 out of 10,000+ participants)}
+  \resumeItem{Winner, Web Development Competition (CESA, PDEACOE, 2024)}
+\resumeItemListEnd
+
+\end{document}
