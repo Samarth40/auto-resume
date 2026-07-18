@@ -161,9 +161,13 @@ function upgradeVerbs(text) {
   return out.replace(/\.\.$/, ".");
 }
 
-export function mockOptimize(resume, jobDescription, analysis) {
+export function mockOptimize(resume, jobDescription, analysis, approvedSkills = []) {
   const matched = analysis.matchedKeywords || [];
   const jdNorms = new Set((analysis.atsKeywords || []).map(norm));
+
+  // User-approved additional skills: add to the last skills group + count as matched
+  const resumeSkillNorms = new Set((resume.skills || []).flatMap((g) => g.items).map(norm));
+  const newSkills = approvedSkills.filter((s) => !resumeSkillNorms.has(norm(s)));
 
   // Summary: rebuild around matched keywords, all facts from original
   const topMatched = matched.slice(0, 6);
@@ -179,6 +183,9 @@ export function mockOptimize(resume, jobDescription, analysis) {
       return aHit - bHit;
     }),
   }));
+  if (newSkills.length && skills.length) {
+    skills[skills.length - 1].items.push(...newSkills);
+  }
   // groups with more JD hits first (keep Soft Skills last)
   skills.sort((a, b) => {
     const soft = (g) => (/soft/i.test(g.category) ? 1 : 0);
@@ -223,14 +230,24 @@ export function mockOptimize(resume, jobDescription, analysis) {
     reason: "ATS parsers and recruiters weight early-listed skills more heavily.",
   });
 
+  if (newSkills.length) {
+    changes.push({
+      section: "skills",
+      before: "—",
+      after: newSkills.join(", "),
+      reason: "Added skills the user explicitly confirmed having.",
+    });
+  }
+
+  const approvedNorms = new Set(newSkills.map(norm));
   return {
     summary,
     skills,
     projects,
     achievements,
-    matchedKeywords: matched,
-    missingKeywords: analysis.missingKeywords || [],
-    atsScore: Math.min(100, (analysis.atsScore || 50) + 7),
+    matchedKeywords: [...matched, ...newSkills],
+    missingKeywords: (analysis.missingKeywords || []).filter((k) => !approvedNorms.has(norm(k))),
+    atsScore: Math.min(100, (analysis.atsScore || 50) + 7 + newSkills.length * 2),
     changes,
     _mock: true,
   };

@@ -16,9 +16,10 @@ import ChangesList from "@/components/ChangesList";
 import CompareView from "@/components/CompareView";
 import PdfPreview from "@/components/PdfPreview";
 import VersionHistory from "@/components/VersionHistory";
+import SkillApproval from "@/components/SkillApproval";
 import { api } from "@/lib/api";
 
-export default function ResultsPage({ result, onBack, onOptimize, loading, versionKey }) {
+export default function ResultsPage({ result, onBack, onOptimize, loading, versionKey, approvedSkills, onToggleSkill }) {
   const [tab, setTab] = useState("analysis");
   const { analysis, optimization, heatmap, originalTex, optimizedTex, pdf } = result;
   const optimized = Boolean(optimization);
@@ -36,6 +37,12 @@ export default function ResultsPage({ result, onBack, onOptimize, loading, versi
             <Button size="sm" onClick={onOptimize} disabled={loading !== null}>
               {loading === "optimize" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Wand2 className="h-4 w-4" />}
               {loading === "optimize" ? "Optimizing…" : "Optimize Resume"}
+            </Button>
+          )}
+          {optimized && approvedSkills?.size > 0 && (
+            <Button size="sm" onClick={onOptimize} disabled={loading !== null}>
+              {loading === "optimize" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Wand2 className="h-4 w-4" />}
+              {loading === "optimize" ? "Optimizing…" : `Re-optimize (+${approvedSkills.size} skills)`}
             </Button>
           )}
           {optimized && (
@@ -112,6 +119,11 @@ export default function ResultsPage({ result, onBack, onOptimize, loading, versi
           </TabsList>
 
           <TabsContent value="analysis" className="space-y-4">
+            <SkillApproval
+              missing={optimized ? optimization.missingKeywords : analysis.missingKeywords}
+              approved={approvedSkills}
+              onToggle={onToggleSkill}
+            />
             <KeywordPanel
               matched={optimized ? optimization.matchedKeywords : analysis.matchedKeywords}
               missing={optimized ? optimization.missingKeywords : analysis.missingKeywords}

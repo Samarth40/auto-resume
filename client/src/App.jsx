@@ -15,6 +15,17 @@ export default function App() {
   const [health, setHealth] = useState({ mockMode: true, model: "" });
   const [versionKey, setVersionKey] = useState(0);
   const [resumeName, setResumeName] = useState("");
+  // Missing JD skills the user confirmed having — only these may be ADDED
+  const [approvedSkills, setApprovedSkills] = useState(new Set());
+
+  const toggleApprovedSkill = useCallback((skill) => {
+    setApprovedSkills((prev) => {
+      const next = new Set(prev);
+      if (next.has(skill)) next.delete(skill);
+      else next.add(skill);
+      return next;
+    });
+  }, []);
 
   useEffect(() => {
     api.health().then(setHealth).catch(() => {
@@ -35,6 +46,7 @@ export default function App() {
     try {
       const data = await api.analyze(jd);
       setResult({ ...data, optimization: null });
+      setApprovedSkills(new Set()); // fresh JD → fresh approvals
       toast.success(`Analysis complete — ATS score ${data.analysis.atsScore}/100`);
     } catch (e) {
       toast.error(e.message);
@@ -47,7 +59,7 @@ export default function App() {
     setLoading("optimize");
     const t = toast.loading("Optimizing resume — rewriting sections, compiling PDF…");
     try {
-      const data = await api.optimize(jd, result?.analysis);
+      const data = await api.optimize(jd, result?.analysis, [...approvedSkills]);
       setResult(data);
       setVersionKey((k) => k + 1);
       toast.dismiss(t);
@@ -62,11 +74,12 @@ export default function App() {
     } finally {
       setLoading(null);
     }
-  }, [jd, result]);
+  }, [jd, result, approvedSkills]);
 
   const handleReset = useCallback(() => {
     setJd("");
     setResult(null);
+    setApprovedSkills(new Set());
     toast.info("Cleared. Paste a new job description to start again.");
   }, []);
 
@@ -100,6 +113,8 @@ export default function App() {
               onOptimize={handleOptimize}
               loading={loading}
               versionKey={versionKey}
+              approvedSkills={approvedSkills}
+              onToggleSkill={toggleApprovedSkill}
             />
           </motion.main>
         ) : (

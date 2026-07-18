@@ -74,14 +74,22 @@ router.post("/optimize", async (req, res, next) => {
     const jd = requireJd(req);
     const { tex: originalTex, parsed } = loadMasterResume();
 
+    // Skills the user explicitly confirmed they have (from the missing-skills
+    // review UI). These are the ONLY skills allowed to be ADDED to the resume.
+    const approvedSkills = [...new Set(
+      (Array.isArray(req.body?.approvedSkills) ? req.body.approvedSkills : [])
+        .map((s) => String(s).trim())
+        .filter((s) => s.length > 0 && s.length <= 60)
+    )].slice(0, 30);
+
     const analysis = req.body?.analysis?.atsScore != null
       ? req.body.analysis
       : await analyzeResume(parsed.structured, jd);
 
-    const optimization = await optimizeResume(parsed.structured, jd, analysis);
+    const optimization = await optimizeResume(parsed.structured, jd, analysis, approvedSkills);
 
     // Splice optimized content into the original LaTeX (formatting untouched)
-    const { tex: optimizedTex, applied } = applyOptimizations(originalTex, optimization);
+    const { tex: optimizedTex, applied } = applyOptimizations(originalTex, optimization, approvedSkills);
 
     fs.mkdirSync(GENERATED_DIR, { recursive: true });
     fs.writeFileSync(OPTIMIZED_TEX_PATH, optimizedTex, "utf8");

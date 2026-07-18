@@ -4,6 +4,14 @@ You will receive:
 1. A candidate's resume (structured JSON parsed from their master resume — the single source of truth)
 2. A job description
 3. The analysis result (matched/missing keywords, scores)
+4. USER-APPROVED ADDITIONAL SKILLS — JD skills missing from the resume that the candidate has explicitly confirmed they possess. These are the ONLY skills you may ADD.
+
+APPROVED-SKILLS INTEGRATION (do all of these for every approved skill):
+- Add it to the most fitting skills group (or a sensible new group), using the JD's exact spelling.
+- Mention it in the summary if it is a required/core JD skill.
+- Where a project or activity plausibly involves it (based ONLY on what the resume already describes — e.g. a deployed web app plausibly involved the approved skill "Vercel"), you may name it in that bullet; otherwise leave bullets untouched rather than fabricate usage stories.
+- Move it from missingKeywords to matchedKeywords and count it in the score.
+Approved skills are the single exception to the "never add a skill" rule below. Skills NOT in the approved list must still never be added.
 
 Your task: rewrite ONLY the allowed sections to maximize ATS alignment with the job description, while remaining 100% truthful to the original resume.
 
@@ -17,7 +25,7 @@ KEYWORD MAXIMIZATION STRATEGY (apply all of these):
 
 YOU MAY OPTIMIZE ONLY:
 ✓ summary — rewrite to front-load JD-relevant skills the candidate ACTUALLY has, densely packed with JD keyword phrasing while reading naturally
-✓ skills — reorder items within groups and regroup categories so JD-relevant skills come first. Use ONLY skills present in the original resume (you may restate a skill using the JD's spelling of the same skill, e.g. "React" → "React.js"). Never add a new skill.
+✓ skills — reorder items within groups and regroup categories so JD-relevant skills come first. Use ONLY skills present in the original resume plus the USER-APPROVED ADDITIONAL SKILLS (you may restate a skill using the JD's spelling of the same skill, e.g. "React" → "React.js"). Never add any other new skill.
 ✓ projects — rewrite bullet descriptions: stronger action verbs (Engineered, Architected, Implemented, Delivered, Optimized), quantified impact ALREADY stated in the original, JD-relevant terminology for tech the project ACTUALLY used. Keep every fact, metric, and technology exactly as in the original.
 ✓ achievements — reword leadership/activity bullets with stronger verbs and JD-relevant phrasing. Keep all numbers/facts identical.
 
@@ -31,13 +39,13 @@ Truthfulness is more important than ATS score. If a missing keyword has no hones
 
 For "projects": return one entry per original project, same titles VERBATIM, with "bullets" — an array replacing the original bullets one-for-one (same count as the original project's bullets).
 For "achievements": return the reworded bullets in the SAME ORDER and SAME COUNT as the originals.
-For "skills": every original skill item must appear exactly once across your groups.
+For "skills": every original skill item must appear exactly once across your groups, and every approved skill must appear exactly once.
 For "changes": list each change as { "section": string, "before": string, "after": string, "reason": short string }.
 "matchedKeywords": ALL JD keywords now covered by the optimized resume (this should grow versus the analysis whenever a truthful rephrasing covered a previously-missing keyword).
 "missingKeywords": JD keywords still absent because there is no honest basis for them.
 "atsScore": recompute with the SAME rubric as the analysis (45% required, 25% ats keywords, 15% responsibilities, 10% preferred, 5% soft) against your optimized content — do not inflate it.
 
-SELF-CHECK before answering: (1) every claim traces to the original resume; (2) every matchedKeyword actually appears (or has an exact synonym) in your optimized text; (3) bullet counts match the originals; (4) no skill was added or lost.
+SELF-CHECK before answering: (1) every claim traces to the original resume or the approved-skills list; (2) every matchedKeyword actually appears (or has an exact synonym) in your optimized text; (3) bullet counts match the originals; (4) no skill outside the original resume + approved list was added, and none was lost.
 
 OUTPUT:
 Return ONLY a single valid JSON object. No markdown. No code fences. No explanations. No trailing commas.

@@ -132,11 +132,20 @@ function skillKey(s) {
   return flat.length > 2 ? flat.replace(/js$/, "") : flat;
 }
 
-/** Validate skill groups only rearrange existing skills — never add new ones. */
-function sanitizeSkills(optimizedGroups, originalGroups) {
+/**
+ * Validate skill groups only rearrange existing skills — never add new ones,
+ * with one exception: `approvedSkills` the user explicitly confirmed having.
+ */
+function sanitizeSkills(optimizedGroups, originalGroups, approvedSkills = []) {
   const allOriginal = new Map();
   for (const g of originalGroups) {
     for (const item of g.items) allOriginal.set(skillKey(item), item);
+  }
+  // Approved skills are whitelisted additions (skip ones already on the resume)
+  const approved = new Map();
+  for (const s of approvedSkills) {
+    const key = skillKey(s);
+    if (key && !allOriginal.has(key)) approved.set(key, String(s).trim());
   }
   const used = new Set();
   const clean = [];
@@ -144,7 +153,7 @@ function sanitizeSkills(optimizedGroups, originalGroups) {
     const items = [];
     for (const it of g.items || []) {
       const key = skillKey(it);
-      if (allOriginal.has(key) && !used.has(key)) {
+      if ((allOriginal.has(key) || approved.has(key)) && !used.has(key)) {
         // Same skill — keep the AI's spelling (may mirror the JD, e.g. "React.js")
         items.push(String(it).trim());
         used.add(key);
@@ -152,9 +161,11 @@ function sanitizeSkills(optimizedGroups, originalGroups) {
     }
     if (items.length) clean.push({ category: String(g.category || "Skills"), items });
   }
-  // Anything the AI dropped gets appended so no real skill is ever lost
+  // Anything the AI dropped gets appended so no real skill is ever lost —
+  // including approved skills the AI forgot to place.
   const leftovers = [];
   for (const [key, orig] of allOriginal) if (!used.has(key)) leftovers.push(orig);
+  for (const [key, s] of approved) if (!used.has(key)) leftovers.push(s);
   if (leftovers.length) {
     const other = clean.find((g) => /other|additional/i.test(g.category));
     if (other) other.items.push(...leftovers);
@@ -170,7 +181,7 @@ function sanitizeSkills(optimizedGroups, originalGroups) {
  * @param {object} opt          AI JSON: { summary, skills, projects, achievements, matchedKeywords }
  * @returns {{ tex: string, applied: string[] }}
  */
-export function applyOptimizations(originalTex, opt) {
+export function applyOptimizations(originalTex, opt, approvedSkills = []) {
   const parsed = parseResume(originalTex);
   const { sections, structured } = parsed;
   const boldKeywords = (opt.matchedKeywords || []).concat(
@@ -190,7 +201,7 @@ export function applyOptimizations(originalTex, opt) {
   }
 
   if (Array.isArray(opt.skills) && opt.skills.length && sections.skills) {
-    const clean = sanitizeSkills(opt.skills, structured.skills);
+    const clean = sanitizeSkills(opt.skills, structured.skills, approvedSkills);
     edits.push({
       start: sections.skills.bodyStart,
       end: sections.skills.bodyEnd,

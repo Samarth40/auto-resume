@@ -51,17 +51,20 @@ export async function analyzeResume(resume, jobDescription) {
 }
 
 /** Optimize resume content for the job description. */
-export async function optimizeResume(resume, jobDescription, analysis) {
-  if (config.mockMode) return mockOptimize(resume, jobDescription, analysis);
+export async function optimizeResume(resume, jobDescription, analysis, approvedSkills = []) {
+  if (config.mockMode) return mockOptimize(resume, jobDescription, analysis, approvedSkills);
 
   const system = loadPrompt("optimize.system.txt");
   const user = fillPrompt(loadPrompt("optimize.user.txt"), {
     RESUME_JSON: JSON.stringify(resume, null, 2),
     JOB_DESCRIPTION: jobDescription,
     ANALYSIS_JSON: JSON.stringify(analysis, null, 2),
+    APPROVED_SKILLS: approvedSkills.length
+      ? JSON.stringify(approvedSkills)
+      : "[] (none — do not add any skill not already in the resume)",
   });
   const json = await chatJson(system, user);
-  return normalizeOptimization(json, resume, analysis);
+  return normalizeOptimization(json, resume, analysis, approvedSkills);
 }
 
 /* ---------- response normalization (defensive against model drift) ---------- */
@@ -143,8 +146,17 @@ function normalizeAnalysis(j) {
   };
 }
 
-function normalizeOptimization(j, resume, analysis = {}) {
-  const matchedKeywords = arr(j.matchedKeywords).map(String);
+function normalizeOptimization(j, resume, analysis = {}, approvedSkills = []) {
+  // User-approved skills are now genuinely on the resume — count them as
+  // matched even if the model forgot to move them out of missingKeywords.
+  const approvedNorms = new Set(approvedSkills.map(kwNorm));
+  const matchedKeywords = [...new Set([
+    ...arr(j.matchedKeywords).map(String),
+    ...approvedSkills,
+  ])];
+  const missingKeywords = arr(j.missingKeywords)
+    .map(String)
+    .filter((k) => !approvedNorms.has(kwNorm(k)));
   // Score the optimized resume against the SAME JD lists the analysis
   // extracted, using the optimizer's post-rewrite matched list. Blended
   // 50/50 with the model estimate, and never below the pre-optimization
@@ -165,7 +177,7 @@ function normalizeOptimization(j, resume, analysis = {}) {
     })),
     achievements: arr(j.achievements).map(String),
     matchedKeywords,
-    missingKeywords: arr(j.missingKeywords).map(String),
+    missingKeywords,
     atsScore,
     changes: arr(j.changes).map((c) => ({
       section: String(c?.section || ""),

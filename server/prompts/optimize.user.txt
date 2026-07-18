@@ -6,3 +6,6 @@ JOB DESCRIPTION:
 
 ANALYSIS RESULT:
 {{ANALYSIS_JSON}}
+
+USER-APPROVED ADDITIONAL SKILLS (the candidate explicitly confirmed having these — you may add them):
+{{APPROVED_SKILLS}}

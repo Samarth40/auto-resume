@@ -17,8 +17,8 @@ export const api = {
   getResume: () => request("/resume"),
   analyze: (jobDescription) =>
     request("/analyze", { method: "POST", body: JSON.stringify({ jobDescription }) }),
-  optimize: (jobDescription, analysis) =>
-    request("/optimize", { method: "POST", body: JSON.stringify({ jobDescription, analysis }) }),
+  optimize: (jobDescription, analysis, approvedSkills = []) =>
+    request("/optimize", { method: "POST", body: JSON.stringify({ jobDescription, analysis, approvedSkills }) }),
   versions: () => request("/versions"),
   getVersion: (id) => request(`/versions/${id}`),
   downloadUrl: (type) => `${BASE}/download/${type}`,
