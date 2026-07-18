@@ -16,7 +16,7 @@ function TabsList({ className, ...props }) {
   return (
     <div
       className={cn(
-        "inline-flex h-10 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground",
+        "inline-flex items-center justify-center gap-1.5 rounded-lg border-2 border-border bg-card p-1.5 shadow-brutal",
         className
       )}
       {...props}
@@ -32,8 +32,10 @@ function TabsTrigger({ value: triggerValue, className, children, ...props }) {
       onClick={() => ctx.onValueChange(triggerValue)}
       data-state={active ? "active" : "inactive"}
       className={cn(
-        "inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium transition-all focus-visible:outline-none disabled:pointer-events-none",
-        active ? "bg-card text-foreground shadow-sm" : "hover:text-foreground",
+        "inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-md border-2 px-3 py-1.5 text-sm font-bold uppercase tracking-wide transition-colors focus-visible:outline-none disabled:pointer-events-none",
+        active
+          ? "border-border bg-accent text-accent-foreground shadow-brutal-sm"
+          : "border-transparent text-muted-foreground hover:text-foreground hover:bg-secondary",
         className
       )}
       {...props}

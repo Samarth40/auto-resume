@@ -24,7 +24,7 @@ export default function Suggestions({ suggestions = [] }) {
               transition={{ delay: i * 0.06 }}
               className="flex gap-2.5 text-sm"
             >
-              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary text-xs font-semibold">
+              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-sm border-2 border-border bg-accent text-accent-foreground text-xs font-bold shadow-brutal-sm">
                 {i + 1}
               </span>
               <span>{s}</span>

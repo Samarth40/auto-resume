@@ -24,7 +24,7 @@ export default function SkillGaps({ gaps = [] }) {
       </CardHeader>
       <CardContent className="space-y-3">
         {gaps.map((g) => (
-          <div key={g.skill} className="flex items-start gap-3 rounded-lg border p-3">
+          <div key={g.skill} className="flex items-start gap-3 rounded-md border-2 border-border p-3 shadow-brutal-sm bg-card">
             <Badge variant={IMPORTANCE_VARIANT[g.importance] || "secondary"} className="mt-0.5 shrink-0 capitalize">
               {g.importance}
             </Badge>

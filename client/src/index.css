@@ -4,44 +4,48 @@
 
 @layer base {
   :root {
-    --background: 220 25% 97%;
-    --foreground: 224 30% 12%;
+    /* Neobrutalist palette — warm paper background, ink borders, solid accents */
+    --background: 46 60% 94%;
+    --foreground: 240 15% 9%;
     --card: 0 0% 100%;
-    --card-foreground: 224 30% 12%;
+    --card-foreground: 240 15% 9%;
     --primary: 243 75% 59%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 220 15% 92%;
-    --secondary-foreground: 224 30% 20%;
-    --muted: 220 15% 93%;
-    --muted-foreground: 224 12% 45%;
-    --accent: 243 60% 94%;
-    --accent-foreground: 243 75% 45%;
-    --destructive: 0 72% 51%;
+    --secondary: 46 45% 88%;
+    --secondary-foreground: 240 15% 9%;
+    --muted: 46 30% 89%;
+    --muted-foreground: 240 8% 38%;
+    --accent: 52 96% 62%;
+    --accent-foreground: 240 15% 9%;
+    --destructive: 0 78% 56%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 15% 88%;
-    --input: 220 15% 88%;
+    --border: 240 15% 9%;
+    --input: 240 15% 9%;
     --ring: 243 75% 59%;
-    --radius: 0.75rem;
+    --radius: 0.5rem;
+    /* ink color used for hard shadows + borders */
+    --ink: 240 15% 9%;
   }
 
   .dark {
-    --background: 228 22% 8%;
-    --foreground: 220 20% 94%;
-    --card: 228 20% 11%;
-    --card-foreground: 220 20% 94%;
-    --primary: 243 80% 66%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 228 15% 17%;
-    --secondary-foreground: 220 20% 90%;
-    --muted: 228 15% 16%;
-    --muted-foreground: 220 12% 62%;
-    --accent: 243 40% 20%;
-    --accent-foreground: 243 80% 80%;
-    --destructive: 0 65% 55%;
+    --background: 240 12% 9%;
+    --foreground: 46 40% 92%;
+    --card: 240 10% 13%;
+    --card-foreground: 46 40% 92%;
+    --primary: 243 85% 70%;
+    --primary-foreground: 240 15% 9%;
+    --secondary: 240 8% 19%;
+    --secondary-foreground: 46 40% 92%;
+    --muted: 240 8% 17%;
+    --muted-foreground: 46 12% 62%;
+    --accent: 52 90% 58%;
+    --accent-foreground: 240 15% 9%;
+    --destructive: 0 72% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 228 14% 20%;
-    --input: 228 14% 20%;
-    --ring: 243 80% 66%;
+    --border: 46 30% 80%;
+    --input: 46 30% 80%;
+    --ring: 243 85% 70%;
+    --ink: 46 30% 80%;
   }
 
   * {
@@ -52,6 +56,10 @@
     @apply bg-background text-foreground font-sans antialiased;
   }
 
+  ::selection {
+    @apply bg-accent text-accent-foreground;
+  }
+
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -60,6 +68,34 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-muted-foreground/30 rounded-full;
+    @apply bg-muted-foreground/40 rounded-none;
+  }
+}
+
+@layer utilities {
+  /* Hard offset shadows — the neobrutalist signature. No blur, ever. */
+  .shadow-brutal {
+    box-shadow: 4px 4px 0 0 hsl(var(--ink));
+  }
+  .shadow-brutal-sm {
+    box-shadow: 2px 2px 0 0 hsl(var(--ink));
+  }
+  .shadow-brutal-lg {
+    box-shadow: 6px 6px 0 0 hsl(var(--ink));
+  }
+  .shadow-brutal-primary {
+    box-shadow: 4px 4px 0 0 hsl(var(--primary));
+  }
+  /* Press effect: shadow collapses, element shifts into its own shadow */
+  .press-brutal {
+    transition: transform 120ms ease, box-shadow 120ms ease;
+  }
+  .press-brutal:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 0 hsl(var(--ink));
+  }
+  .press-brutal:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 0 0 hsl(var(--ink));
   }
 }

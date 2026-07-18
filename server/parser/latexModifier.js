@@ -125,20 +125,28 @@ function replaceProjectBullets(body, optimizedProjects, boldKeywords) {
   return spans.length > 1 ? out : body;
 }
 
+/** Canonical skill key: "React.js" ≈ "ReactJS" ≈ "react" — same skill, variant spelling. */
+function skillKey(s) {
+  const flat = String(s).toLowerCase().replace(/[^a-z0-9+#]/g, "");
+  // strip a trailing "js" suffix ("reactjs" → "react") unless that's the whole name
+  return flat.length > 2 ? flat.replace(/js$/, "") : flat;
+}
+
 /** Validate skill groups only rearrange existing skills — never add new ones. */
 function sanitizeSkills(optimizedGroups, originalGroups) {
   const allOriginal = new Map();
   for (const g of originalGroups) {
-    for (const item of g.items) allOriginal.set(item.toLowerCase().trim(), item);
+    for (const item of g.items) allOriginal.set(skillKey(item), item);
   }
   const used = new Set();
   const clean = [];
   for (const g of optimizedGroups || []) {
     const items = [];
     for (const it of g.items || []) {
-      const key = String(it).toLowerCase().trim();
+      const key = skillKey(it);
       if (allOriginal.has(key) && !used.has(key)) {
-        items.push(allOriginal.get(key)); // use the ORIGINAL spelling
+        // Same skill — keep the AI's spelling (may mirror the JD, e.g. "React.js")
+        items.push(String(it).trim());
         used.add(key);
       }
     }

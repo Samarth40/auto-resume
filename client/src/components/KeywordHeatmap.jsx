@@ -4,13 +4,18 @@ import { Flame } from "lucide-react";
 const SECTIONS = ["summary", "skills", "experience", "projects", "achievements"];
 const LABELS = { summary: "Summary", skills: "Skills", experience: "Experience", projects: "Projects", achievements: "Achievements" };
 
+// Discrete solid steps — flat colors, no alpha fades.
+const STEPS = [
+  { bg: "#c7d2fe", fg: "#1e1b4b" }, // light indigo
+  { bg: "#818cf8", fg: "#ffffff" },
+  { bg: "#6366f1", fg: "#ffffff" },
+  { bg: "#4338ca", fg: "#ffffff" }, // deep indigo
+];
+
 function cellStyle(count, max) {
   if (count === 0) return { backgroundColor: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" };
-  const intensity = Math.min(1, count / Math.max(1, max));
-  return {
-    backgroundColor: `rgba(99, 102, 241, ${0.15 + intensity * 0.75})`,
-    color: intensity > 0.5 ? "#fff" : "hsl(var(--foreground))",
-  };
+  const step = STEPS[Math.min(STEPS.length - 1, Math.floor((count / Math.max(1, max)) * STEPS.length))];
+  return { backgroundColor: step.bg, color: step.fg };
 }
 
 /** Keyword × Section frequency heatmap. */
@@ -47,7 +52,7 @@ export default function KeywordHeatmap({ heatmap = [] }) {
                 {SECTIONS.map((s) => (
                   <td key={s} className="p-0.5">
                     <div
-                      className="h-7 min-w-[3rem] rounded-md flex items-center justify-center font-semibold tabular-nums"
+                      className="h-7 min-w-[3rem] rounded-sm border-2 border-border flex items-center justify-center font-bold tabular-nums"
                       style={cellStyle(row.counts[s] ?? 0, max)}
                       title={`${row.keyword} × ${LABELS[s]}: ${row.counts[s] ?? 0}`}
                     >

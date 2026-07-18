@@ -27,7 +27,7 @@ export default function ScoreRing({ score = 0, size = 180, strokeWidth = 14, lab
             fill="none"
             stroke={color}
             strokeWidth={strokeWidth}
-            strokeLinecap="round"
+            strokeLinecap="butt"
             strokeDasharray={circumference}
             initial={{ strokeDashoffset: circumference }}
             animate={{ strokeDashoffset: offset }}
